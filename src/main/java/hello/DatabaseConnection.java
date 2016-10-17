@@ -7,6 +7,7 @@ import java.sql.Statement;
 public class DatabaseConnection {
 
   private Connection c = null;
+  Statement stmt = null;
 
   public DatabaseConnection() {
     // Open the DB connection
@@ -24,12 +25,26 @@ public class DatabaseConnection {
   }
 
   public void safeCreateTable() {
-    Statement stmt;
     try {
       stmt = c.createStatement();
       String sql = "CREATE TABLE IF NOT EXISTS messages " +
           "(ID      INT PRIMARY KEY NOT NULL," +
           " MESSAGE TEXT            NOT NULL)";
+      stmt.executeUpdate(sql);
+      stmt.close();
+      c.close();
+    } catch (Exception e) {
+      e.printStackTrace();
+      System.err.println(e.getClass().getName() + ": " + e.getMessage());
+      System.exit(0);
+    }
+    System.out.println("Table created successfully");
+  }
+
+  public void writeMessage(Integer id, String message) {
+    try {
+      stmt = c.createStatement();
+      String sql = "INSERT INTO messsages";
       stmt.executeUpdate(sql);
       stmt.close();
       c.close();

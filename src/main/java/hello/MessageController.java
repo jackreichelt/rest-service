@@ -1,5 +1,6 @@
 package hello;
 
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,10 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class MessageController {
 
-  private final AtomicLong counter = new AtomicLong();
+  private final AtomicInteger counter = new AtomicInteger();
 
   @RequestMapping(value = "/message", method = RequestMethod.GET)
-  public Message message(@RequestParam(value = "id") Long id) {
+  public Message message(@RequestParam(value = "id") Integer id) {
     // Read to DB here.
 
     return new Message(id, "blank");
@@ -21,7 +22,7 @@ public class MessageController {
 
   @RequestMapping(value = "/message", method = RequestMethod.POST)
   public Message message(@RequestParam(value = "message") String message) {
-    Long newId = counter.incrementAndGet();
+    Integer newId = counter.incrementAndGet();
 
     // Write to DB here.
 
