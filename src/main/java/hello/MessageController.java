@@ -15,7 +15,10 @@ public class MessageController {
 
   @RequestMapping(value = "/message", method = RequestMethod.GET)
   public Message message(@RequestParam(value = "id") Integer id) {
+
     // Read to DB here.
+    DatabaseConnection db = new DatabaseConnection();
+    db.readMessage(id);
 
     return new Message(id, "blank");
   }
@@ -25,6 +28,8 @@ public class MessageController {
     Integer newId = counter.incrementAndGet();
 
     // Write to DB here.
+    DatabaseConnection db = new DatabaseConnection();
+    db.writeMessage(newId, message);
 
     return new Message(newId, message);
   }
