@@ -14,15 +14,16 @@ public class MessageController {
 
   @RequestMapping(value = "/message", method = RequestMethod.GET)
   public Message message(@RequestParam(value = "id") Long id) {
-
+    // Read to DB here.
 
     return new Message(id, "blank");
   }
 
   @RequestMapping(value = "/message", method = RequestMethod.POST)
   public Message message(@RequestParam(value = "message") String message) {
-
     Long newId = counter.incrementAndGet();
+
+    // Write to DB here.
 
     return new Message(newId, message);
   }
