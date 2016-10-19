@@ -28,6 +28,13 @@ public class MessageController {
     // Write to DB.
     dbc.writeMessage(newId, message);
 
-    return new Message(newId, message);
+    // Read, to ensure it's correctly written.
+    String messageText = dbc.readMessage(newId);
+    if (messageText == null) {
+      // Ensure no blanks in the database.
+      counter.decrementAndGet();
+    }
+
+    return new Message(newId, messageText);
   }
 }
