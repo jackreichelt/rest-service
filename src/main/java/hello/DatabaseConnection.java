@@ -9,7 +9,8 @@ public class DatabaseConnection {
 
   private static final Logger log = LoggerFactory.getLogger(Application.class);
 
-//  JdbcTemplate jdbcTemplate;
+  @Autowired
+  JdbcTemplate jdbcTemplate;
 
   public DatabaseConnection () {
     log.info("Creating table");
@@ -18,10 +19,10 @@ public class DatabaseConnection {
         "(ID      INT PRIMARY KEY NOT NULL," +
         " MESSAGE TEXT            NOT NULL)";
 
-    if (Application.jdbcTemplate == null) {
+    if (jdbcTemplate == null) {
       log.error("!!jdbcTemplate is null!!");
     } else {
-      Application.jdbcTemplate.execute(sql);
+      jdbcTemplate.execute(sql);
     }
   }
 
@@ -31,14 +32,14 @@ public class DatabaseConnection {
     log.info("  id     : " + id.toString());
     log.info("  message: " + message);
 
-    String sql = "INSERT INTO messsages VALUES " +
+    String sql = "INSERT INTO messages VALUES " +
         "(" + id.toString() + ", " +
         message + ")";
 
-    if (Application.jdbcTemplate == null) {
+    if (jdbcTemplate == null) {
       log.error("!!jdbcTemplate is null!!");
     } else {
-      Application.jdbcTemplate.update(sql);
+      jdbcTemplate.update(sql);
     }
 
     System.out.println("Row added");
@@ -46,14 +47,14 @@ public class DatabaseConnection {
 
   public String readMessage(Integer id) {
 
-    String sql = "SELECT messsage FROM messages " +
+    String sql = "SELECT message FROM messages " +
         "WHERE ID = ?";
 
-    if (Application.jdbcTemplate == null) {
+    if (jdbcTemplate == null) {
       log.error("!!jdbcTemplate is null!!");
       return null;
     } else {
-      String message = Application.jdbcTemplate.queryForObject(sql, new Object[]{id}, String.class);
+      String message = jdbcTemplate.queryForObject(sql, new Object[]{id}, String.class);
       log.info("Row read");
       return message;
     }

@@ -14,6 +14,11 @@ public class MessageController {
 
   private static DatabaseConnection dbc = new DatabaseConnection();
 
+  public MessageController() {
+    // Get max id from dbc and set counter
+
+  }
+
   @RequestMapping(value = "/message", method = RequestMethod.GET)
   public Message message(@RequestParam(value = "id") Integer id) {
 
@@ -23,7 +28,7 @@ public class MessageController {
 
   @RequestMapping(value = "/message", method = RequestMethod.POST)
   public Message message(@RequestParam(value = "message") String message) {
-    Integer newId = counter.incrementAndGet();
+    Integer newId = counter.getAndIncrement();
 
     // Write to DB.
     dbc.writeMessage(newId, message);
