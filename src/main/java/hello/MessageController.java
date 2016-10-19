@@ -1,7 +1,6 @@
 package hello;
 
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -13,23 +12,21 @@ public class MessageController {
 
   private final AtomicInteger counter = new AtomicInteger();
 
+  private static DatabaseConnection dbc = new DatabaseConnection();
+
   @RequestMapping(value = "/message", method = RequestMethod.GET)
   public Message message(@RequestParam(value = "id") Integer id) {
 
-    // Read to DB here.
-    DatabaseConnection db = new DatabaseConnection();
-    db.readMessage(id);
-
-    return new Message(id, "blank");
+    // Read from DB.
+    return new Message(id, dbc.readMessage(id));
   }
 
   @RequestMapping(value = "/message", method = RequestMethod.POST)
   public Message message(@RequestParam(value = "message") String message) {
     Integer newId = counter.incrementAndGet();
 
-    // Write to DB here.
-    DatabaseConnection db = new DatabaseConnection();
-    db.writeMessage(newId, message);
+    // Write to DB.
+    dbc.writeMessage(newId, message);
 
     return new Message(newId, message);
   }
